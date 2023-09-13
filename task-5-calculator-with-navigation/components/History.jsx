@@ -1,5 +1,4 @@
 import { StyleSheet, View, Text, FlatList, Button } from "react-native";
-import { useState } from "react";
 
 export default function History({ route }) {
   const { history } = route.params;
