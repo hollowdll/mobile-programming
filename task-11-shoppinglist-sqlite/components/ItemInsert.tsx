@@ -1,8 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, TextInput, Button } from 'react-native';
 import { useState } from 'react';
 
-export default function ItemInsert() {
+type Props = {
+  saveItem: (product: string, amount: string) => void,
+}
+
+export default function ItemInsert({ saveItem }: Props) {
   const [product, setProduct] = useState("");
   const [amount, setAmount] = useState("");
 
@@ -20,8 +23,7 @@ export default function ItemInsert() {
         onChangeText={text => setAmount(text)}
         placeholder='Amount'
       />
-      <Button title='SAVE' />
-      <StatusBar style="auto" />
+      <Button title='SAVE' onPress={() => saveItem(product, amount)} />
     </View>
   );
 }
@@ -29,7 +31,6 @@ export default function ItemInsert() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
