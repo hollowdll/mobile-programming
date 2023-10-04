@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 import type { ShoppinglistItem } from '../types/shoppinglist';
 
 type Props = {
-  items: Array<ShoppinglistItem>
+  items: Array<ShoppinglistItem>,
   deleteItem: (id: number) => void,
 }
 
