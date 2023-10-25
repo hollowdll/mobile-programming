@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TextInput, View, Button, FlatList, Alert } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Alert } from 'react-native';
 import * as SQLite from 'expo-sqlite';
+import { Header, Input, Button, Icon, ListItem } from '@rneui/themed';
 
 const db = SQLite.openDatabase('coursedb.db');
 
@@ -63,26 +64,50 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <TextInput 
-        placeholder='Title' 
-        style={{marginTop: 30, fontSize: 18, width: 200, borderColor: 'gray', borderWidth: 1}}
+      <Header
+        centerComponent={{ text: 'My course DB app', style: { color: 'yellow' }}} />
+      <Input
+        style={{ marginTop: 20 }}
+        placeholder='Title'
         onChangeText={title => setTitle(title)}
         value={title}/>  
-      <TextInput placeholder='Credits' 
-        keyboardType="numeric" 
-        style={{ marginTop: 5, marginBottom: 5,  fontSize:18, width: 200, borderColor: 'gray', borderWidth: 1}}
+      <Input
+        placeholder='Credits' 
+        keyboardType="numeric"
         onChangeText={credit => setCredit(credit)}
         value={credit}/>      
-      <Button onPress={saveItem} title="Save" /> 
+      <Button onPress={saveItem} radius={"md"} type="solid">
+        Save
+        <Icon name="save" color="white" />
+      </Button> 
       <Text style={{marginTop: 30, fontSize: 20}}>Courses</Text>
       <FlatList 
-        style={{marginLeft : "5%"}}
+        style={{width : "90%"}}
         keyExtractor={item => item.id.toString()} 
         renderItem={({item}) => 
-          <View style={styles.listcontainer}>
-            <Text style={{fontSize: 18}}>{item.title}, {item.credits}</Text>
-            <Text style={{fontSize: 18, color: '#0000ff'}} onPress={() => deleteItem(item.id)}> Done</Text>
-          </View>} 
+          <ListItem.Swipeable
+            bottomDivider
+            rightContent={(action) => (
+              <Button
+                containerStyle={{
+                  flex: 1,
+                  justifyContent: "center",
+                  backgroundColor: "#f4f4f4",
+                }}
+                type="clear"
+                icon={{ name: "delete-outline" }}
+                onPress={() => deleteItem(item.id)}
+              />
+            )}
+          >
+            <Icon name="label-important-outline" type="material" />
+            <ListItem.Content>
+              <ListItem.Title>{item.title}</ListItem.Title>
+              <ListItem.Subtitle>{item.credits}</ListItem.Subtitle>
+            </ListItem.Content>
+            <ListItem.Chevron />
+          </ListItem.Swipeable>
+        } 
         data={courses} 
         ItemSeparatorComponent={listSeparator} 
       />      
@@ -92,7 +117,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
  container: {
-  marginTop: 50,
   flex: 1,
   backgroundColor: '#fff',
   alignItems: 'center',
